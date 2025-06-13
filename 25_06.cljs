@@ -51,3 +51,26 @@
                          (rand-int 255) " / "
                          (rand 0.5) ")"))
         (fill-rect x y 1 1)))))
+
+(range 10)
+(range 10 20)
+(range 1 25 2)
+(range 0 -1 -0.25)
+
+(repeat 5 1)
+(repeat 10 "x")
+
+(take 10 (iterate inc 1))
+
+(def whole-numbers (iterate inc 1))
+
+(take 20 (repeat 1))
+(interleave whole-numbers ["A" "B" "C" "D" "E"])
+(apply str (interpose "," ["apples" "bananas" "grapes"]))
+
+(require '[clojure.string :refer [join]])
+(join \, ["apples" "bananas" "grapes"])
+
+(set [1 2 3])
+(hash-set 1 2 3)
+(vec (range 3))
