@@ -74,3 +74,15 @@
 (set [1 2 3])
 (hash-set 1 2 3)
 (vec (range 3))
+
+(take 10 (filter even? whole-numbers))
+(take 10 (filter odd? whole-numbers))
+
+(def vowel? #{\a \e \i \o \u})
+(def consonant? (complement vowel?))
+
+(take-while consonant? "the-quick-brown-fox")
+(drop-while consonant? "the-quick-brown-fox")
+(split-at 5 (range 10))
+(split-with #(<= % 10) (range 0 20 2))
+(take 10 (cycle (range 3)))
