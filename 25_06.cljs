@@ -120,12 +120,14 @@
 (def img (js/Image.))
 
 (defn animate []
-  (resize-canvas 8 8)
-  (draw-image img 0 0 8 8 0 0 8 8))
+  (clear-rect 0 0 128 128)
+  (draw-image img (* (rand-int 5) 128) 0 128 128 0 0 128 128)
+  (.requestAnimationFrame js/window #(animate)))
 
 (comment
   (.addEventListener img "load" #(animate))
   (set! (.-src img) "img.png")
+  (draw-image img (* (rand-int 5) 128) 0 128 128 0 0 128 128)
   )
 
 (defn points [w h]
@@ -159,4 +161,33 @@
   (apply translate (rand-nth moves))
   (doseq [p ps] (fill-rect (first p) (second p) 1 1))
   (.requestAnimationFrame js/window #(animate)))
+
+
+(defn z [x y] (Math/sqrt (- 4 (+ (* x x) (* y y)))))
+
+(comment
+
+  (do 
+    (resize-canvas (* 5 128) 128)
+    (scale 16 16)
+    (translate 3 3))
+  
+  (def pixels (for [x (range -2 3 1) y (range -2 3 1)
+                    :when (>= 4 (+ (* x x) (* y y)))]
+                [x y (z x y)]))
+
+  (doseq [px (nth sprites 4)]
+    (let [c (+ 80 (* 30 (nth px 2)))]
+      (fill-style (str "rgb(" (join \space [c 15 50]) ")")))
+    (fill-rect (first px) (second px) 1 1))
+
+  (translate 8 0)
+
+  (def sprites (take 5 (iterate
+                        (fn [coll] (map #(update % 2 rand) coll))
+                        pixels)))
+
+
+  )
+
 
