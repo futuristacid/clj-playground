@@ -125,8 +125,6 @@
   (.requestAnimationFrame js/window #(animate)))
 
 (comment
-  (.addEventListener img "load" #(animate))
-  (set! (.-src img) "img.png")
   (draw-image img (* (rand-int 5) 128) 0 128 128 0 0 128 128)
   )
 
@@ -181,13 +179,34 @@
       (fill-style (str "rgb(" (join \space [c 15 50]) ")")))
     (fill-rect (first px) (second px) 1 1))
 
-  (translate 8 0)
-
   (def sprites (take 5 (iterate
                         (fn [coll] (map #(update % 2 rand) coll))
-                        pixels)))
+                        pixels)))  
+
+  (resize-canvas 64 8)
+  (doseq [z (range 28 256 28)]
+    (fill-style (color z z z))
+    (doseq [x (range 8) y (range 8)]
+      (fill-rect x y 1 1))
+    (translate 8 0)
+    )
+
+
+  (resize-canvas 256 256)
+  (scale 1 1)
+  (.addEventListener
+   img "load"
+   (doseq [x (range 0 256 8) y (range 0 256 8)]
+      (draw-image img
+                  (* 8 (rand-int 8)) 0 8 8
+                  x y 8 8)
+      )
+   )
+  (set! (.-src img) "a.png")
+
 
 
   )
 
-
+(defn color [r g b]
+  (str "rgb(" (join \space [r g b]) ")"))
