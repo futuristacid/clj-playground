@@ -205,6 +205,23 @@
   (set! (.-src img) "a.png")
 
 
+  (defn f [x y]
+    (cond (or (= x 0) (= x 7) (= y 0) (= y 7)) 127
+          :else 16))
+  
+  (def ps (for [x (range 8) y (range 8)]
+            [x y (f x y)]))
+
+  (doseq [p ps]
+    (let [c (p 2)] (fill-style (color c c c)))
+    (fill-rect (p 0) (p 1) 1 1))
+
+  (resize-canvas 64 64)
+  (scale 8 8)
+  
+
+    
+
 
   )
 
