@@ -220,7 +220,7 @@
     (* -17 (+  (* 1 x) (* 1 y) -24)))
 
   (doseq [[x y z] (for [x (range 4 12) y (range 5 13)]
-               [x y (f x y)])]
+                    [x y (int (f x y))])]
     (when-not (or (< z 0) (> z 255))
       (fill-style (color z z z))
       (fill-rect x y 1 1)))
