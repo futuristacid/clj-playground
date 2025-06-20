@@ -216,11 +216,21 @@
     (let [c (p 2)] (fill-style (color c c c)))
     (fill-rect (p 0) (p 1) 1 1))
 
-  (resize-canvas 64 64)
-  (scale 8 8)
-  
+  (defn f [x y]
+    (* -17 (+  (* 1 x) (* 1 y) -24)))
 
-    
+  (doseq [[x y z] (for [x (range 4 12) y (range 5 13)]
+               [x y (f x y)])]
+    (when-not (or (< z 0) (> z 255))
+      (fill-style (color z z z))
+      (fill-rect x y 1 1)))
+
+  (clear-rect -256 -256 512 512)
+  (resize-canvas 512 512)
+  (translate 256 256)
+  (scale 16 -16)
+  
+  
 
 
   )
