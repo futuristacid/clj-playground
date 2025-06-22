@@ -72,27 +72,16 @@
 (take 10 (cycle (range 3)))
 
 
-(defn rand-px []
-  {:x (rand-int 8)
-   :y (rand-int 8)
+(defn rand-px [s]
+  {:x (rand-int s)
+   :y (rand-int s)
    :r (rand-int 255)
    :g (rand-int 255)
    :b (rand-int 255)})
 
-(defn sprite-sheet-alpha [pxls n]
-  (resize-canvas (* 8 n) 8)
-  (doseq [i (range n)]
-    (doseq [p pxls]
-      (fill-style (str "rgb("
-                       (:r p) " "
-                       (:g p) " "
-                       (:b p) " / "
-                       (/ 1 (inc i)) ")"))
-      (fill-rect (:x p) (:y p) 1 1))
-    (translate 8 0)))
-
 (defn draw-image [img sx sy sw sh dx dy dw dh]
   (.drawImage ctx img sx sy sw sh dx dy dw dh))
+
 
 (defn color [r g b]
   (str "rgb(" (join \space [r g b]) ")"))
@@ -154,3 +143,75 @@
 (sort > [42 1 7 11])
 (sort-by :grade > [{:grade 83} {:grade 90} {:grade 77}])
 
+(def x (for [i (range 1 3)] (do (println i) i)))
+(doall x)
+(dorun x)
+
+(peek '(1 2 3))
+(pop '(1 2 3))
+(rest ())
+(peek [1 2 3])
+(pop [1 2 3])
+(get [:a :b :c] 1)
+(get [:a :b :c] 5)
+([:a :b :c] 1)
+(assoc [0 1 2 3 4] 2 :two)
+(subvec [1 2 3 4 5] 3)
+
+(keys {:sundance "spaniel" :darwin "beagle"})
+(vals {:sundance "spaniel" :darwin "beagle"})
+(get {:sundance "spaniel" :darwin "beagle"} :darwin)
+(get {:sundance "spaniel" :darwin "beagle"} :snoopy)
+({:sundance "spaniel" :darwin "beagle"} :darwin)
+({:sundance "spaniel" :darwin "beagle"} :snoopy)
+(:darwin {:sundance "spaniel" :darwin "beagle"})
+(:snoopy {:sundance "spaniel" :darwin "beagle"})
+
+(def score {:stu nil :joey 100})
+(:stu score)
+(contains? score :stu)
+(get score :stu :score-not-found)
+(get score :aaron :score-not-found)
+
+(def song {:name "Agnus Dei"
+           :artist "Krzysztof Penderecki"
+           :album "Polish Requiem"
+           :genre "Classical"})
+(assoc song :kind "MPEG Audio File")
+(dissoc song :genre)
+(select-keys song [:name :artist])
+(merge song {:size 8118166 :time 507245})
+(merge-with concat
+            {:rubble ["Barney"] :flintstone ["Fred"]}
+            {:rubble ["Betty"] :flintstone ["Wilma"]}
+            {:rubble ["Bam-Bam"] :flintstone ["Pebbles"]})
+
+(def languages #{"java" "c" "d" "clojure"})
+(def beverages #{"java" "chai" "pop"})
+(require '[clojure.set :as s])
+(s/union languages beverages)
+(s/difference languages beverages)
+(s/intersection languages beverages)
+(s/select #(= 1 (count %)) languages)
+
+(def compositions
+  #{{:name "The Art of the Fugue" :composer "J. S. Bach"}
+    {:name "Musical Offering" :composer "J. S. Bach"}
+    {:name "Requiem" :composer "Giuseppe Verdi"}
+    {:name "Requiem" :composer "W. A. Mozart"}})
+(def composers
+  #{{:composer "J. S. Bach" :country "Germany"}
+    {:composer "W. A. Mozart" :country "Austria"}
+    {:composer "Giuseppe Verdi" :country "Italy"}})
+(def nations
+  #{{:nation "Germany" :language "German"}
+    {:nation "Austria" :language "German"}
+    {:nation "Italy" :language "Italian"}})
+(s/rename compositions {:name :title})
+(s/select #(= (:name %) "Requiem") compositions)
+(s/project compositions [:name])
+(s/join compositions composers)
+(s/project (s/join (s/select #(= (:name %) "Requiem")
+                             compositions)
+                   composers)
+           [:country])
