@@ -132,9 +132,25 @@
   (resize-canvas 512 512)
   (translate 256 256)
   (scale 1 -1)
-  
-  
-
 
   )
+
+
+(every? odd? [1 3 5])
+(every? odd? [1 3 5 8])
+(some even? [1 2 3])
+(some even? [1 3 5])
+(some identity [nil false 1 nil 2])
+(some #{3} (range 20))
+
+(map #(str "<p>" % "</p>") ["the" "quick" "brown" "fox"])
+(map #(str "<" %1 ">" %2 "</" %1 ">")
+     ["h1" "h2" "h3" "h1"]
+     ["the" "quick" "brown" "fox"])
+(reduce + (range 1 11))
+(reduce * (range 1 11))
+(sort [42 1 7 11])
+(sort-by #(str %) [42 1 7 11])
+(sort > [42 1 7 11])
+(sort-by :grade > [{:grade 83} {:grade 90} {:grade 77}])
 
