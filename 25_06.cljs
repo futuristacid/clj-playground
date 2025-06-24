@@ -215,3 +215,12 @@
                              compositions)
                    composers)
            [:country])
+
+
+(defn fibo []
+  (map first (iterate (fn [[a b]] [b (+ a b)]) [0N 1N])))
+
+(comment
+  (def lots-o-fibs (take 100000000 (fibo)))
+  (nth lots-o-fibs 100)
+  )
