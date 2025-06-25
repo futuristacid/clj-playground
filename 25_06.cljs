@@ -221,13 +221,28 @@
   (map first (iterate (fn [[a b]] [b (+ a b)]) [0N 1N])))
 
 (defn animate! []
-  (clear-rect 0 0 8 8)
-  (fill-rect (rand-int 8) (rand-int 8) 1 1)
-  (reset! req (.requestAnimationFrame js/window animate!)))
+  (let [p @p]
+    (clear-rect 0 0 256 256)
+    (fill-rect (:x p) (:y p) 2 2)
+    (move)
+    (reset! req (request-animation-frame animate!))))
+
+(defn move []
+  (let [c (rand-nth [:x :y])
+        f (rand-nth [inc dec])]
+    (swap! p #(update % c f))))
+
+(defn request-animation-frame [f]
+  (.requestAnimationFrame js/window f))
+
+(defn cancel-animation-frame [v]
+  (.cancelAnimationFrame js/window v))
+
 
 (comment
-  (resize-canvas 64 64)
+  (resize-canvas 256 256)
   (scale 8 8)
-  (def req (atom (.requestAnimationFrame js/window animate!)))
-  (.cancelAnimationFrame js/window @req)
+  (def p (atom {:x (rand-int 64) :y (rand-int 64)}))
+  (def req (atom (request-animation-frame animate!)))
+  (cancel-animation-frame @req)
   )
