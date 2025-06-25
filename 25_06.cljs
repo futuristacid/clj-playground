@@ -220,7 +220,14 @@
 (defn fibo []
   (map first (iterate (fn [[a b]] [b (+ a b)]) [0N 1N])))
 
+(defn animate! []
+  (clear-rect 0 0 8 8)
+  (fill-rect (rand-int 8) (rand-int 8) 1 1)
+  (reset! req (.requestAnimationFrame js/window animate!)))
+
 (comment
-  (def lots-o-fibs (take 100000000 (fibo)))
-  (nth lots-o-fibs 100)
+  (resize-canvas 64 64)
+  (scale 8 8)
+  (def req (atom (.requestAnimationFrame js/window animate!)))
+  (.cancelAnimationFrame js/window @req)
   )
