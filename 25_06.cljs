@@ -36,6 +36,7 @@
   (do (set! (.-width canvas) w)
       (set! (.-height canvas) h)))
 
+
 (range 10)
 (range 10 20)
 (range 1 25 2)
@@ -90,7 +91,6 @@
 
 (comment
 
-
   (resize-canvas 256 256)
   (scale 1 1)
   (.addEventListener
@@ -102,7 +102,6 @@
      )
    )
   (set! (.-src img) "a.png")
-
 
   ;; -1/C (Ax + By + D)
   ;; A and B change direction
@@ -121,7 +120,6 @@
   (resize-canvas 512 512)
   (translate 256 256)
   (scale 1 -1)
-
   )
 
 
@@ -223,23 +221,7 @@
 (defn animate! []
   (clear-rect -128 -128 256 256)
   (draw)
-  (move)
-  (reset! req (request-animation-frame animate!)))
-
-(defn draw []
-  (let [r @r
-        x1 -4 y1 2
-        x2 4 y2 6]
-    (fill-rect x1 y1 1 1)
-    (fill-rect x2 y2 1 1)
-    (fill-rect (/ (+ x1 (* r x2)) (+ 1 r))
-               (/ (+ y1 (* r y2)) (+ 1 r))
-               1 1)))
-
-(defn move []
-  (let [v @r
-        f (rand-nth [dec inc])]
-    (swap! r f)))
+  (reset! req (request-animation-frame #(animate!))))
 
 (defn request-animation-frame [f]
   (.requestAnimationFrame js/window f))
@@ -247,13 +229,18 @@
 (defn cancel-animation-frame [v]
   (.cancelAnimationFrame js/window v))
 
+(defn draw []
+  (let [s @stt]
+    (fill-rect (:x s) (:y s) 1 1)))
+
 
 (comment
-  (resize-canvas 512 512)
-  (translate 256 256)
-  (scale 4 -4)
-  (def r (atom 3))
-  (def req (atom (request-animation-frame animate!)))
+  (resize-canvas 256 256)
+  (scale 32 32)
+  (def stt (atom {:x 1 :y 1}))
+  (def req (atom (request-animation-frame #(animate!))))
+
+  (reset! stt {:x 3 :y 3})
+
   (cancel-animation-frame @req)
-  (reset! r 0)
   )
