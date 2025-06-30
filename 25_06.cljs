@@ -231,16 +231,19 @@
 
 (defn draw []
   (let [s @stt]
-    (fill-rect (:x s) (:y s) 1 1)))
+    (doseq [[x y] (map list (:xs s) (:ys s))]
+      (fill-rect x y 1 1))))
 
 
 (comment
   (resize-canvas 256 256)
   (scale 32 32)
-  (def stt (atom {:x 1 :y 1}))
+
+  (def stt (atom {:xs [] :ys []}))
   (def req (atom (request-animation-frame #(animate!))))
 
-  (reset! stt {:x 3 :y 3})
+  (reset! stt {:xs (repeat 5 1)
+               :ys (range 2 7)})
 
   (cancel-animation-frame @req)
   )
