@@ -237,13 +237,16 @@
 
 (comment
   (resize-canvas 256 256)
-  (scale 32 32)
+  (translate 128 128)
+  (scale 4 -4)
 
   (def stt (atom {:xs [] :ys []}))
   (def req (atom (request-animation-frame #(animate!))))
 
-  (reset! stt {:xs (repeat 5 1)
-               :ys (range 2 7)})
+  (let [xs (range 10)
+        f #(int (Math/sqrt (* % % %)))]
+    (reset! stt {:xs xs
+                 :ys (map f xs)}))
 
   (cancel-animation-frame @req)
   )
