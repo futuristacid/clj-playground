@@ -230,8 +230,8 @@
   (.cancelAnimationFrame js/window v))
 
 (defn draw []
-  (let [s @stt]
-    (doseq [[x y] (map list (:xs s) (:ys s))]
+  (let [xys @stt]
+    (doseq [[x y] xys]
       (fill-rect x y 1 1))))
 
 
@@ -240,13 +240,15 @@
   (translate 128 128)
   (scale 4 -4)
 
-  (def stt (atom {:xs [] :ys []}))
+  (def stt (atom [[0 -1] [0 1] [1 -2] [1 2]]))
   (def req (atom (request-animation-frame #(animate!))))
 
-  (let [xs (range 10)
-        f #(int (Math/sqrt (* % % %)))]
-    (reset! stt {:xs xs
-                 :ys (map f xs)}))
+  (let [xs (range 6)
+        ;; f(x) => [int]
+        yss (repeat 6 [1 2 3])]
+    (reset! stt
+            (mapcat #(for [y %2] [%1 y])
+                    xs yss)))
 
   (cancel-animation-frame @req)
   )
