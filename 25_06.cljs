@@ -235,6 +235,8 @@
       (fill-rect x y 1 1))))
 
 
+
+
 (comment
   (resize-canvas 256 256)
   (translate 128 128)
@@ -243,12 +245,15 @@
   (def stt (atom [[0 -1] [0 1] [1 -2] [1 2]]))
   (def req (atom (request-animation-frame #(animate!))))
 
-  (let [xs (range 6)
-        ;; f(x) => [int]
-        yss (repeat 6 [1 2 3])]
-    (reset! stt
-            (mapcat #(for [y %2] [%1 y])
-                    xs yss)))
+(def f (let [p [-5 -3]
+             a 37
+             m (Math/tan (/ (* Math/PI a) 180))]
+         #(vector (int (+ (second p) (* m (- % (first p))))))))
+
+(let [xs (range -10 11)]
+  (reset! stt
+          (mapcat #(for [y %2] [%1 y])
+                  xs (for [x xs] (f x)))))
 
   (cancel-animation-frame @req)
   )
